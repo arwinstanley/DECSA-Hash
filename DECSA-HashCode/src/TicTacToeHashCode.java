@@ -1,16 +1,19 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-
-//TODO Make sure you remove all of the TODO comments from this file before turning itin
-
+/**
+ * @author Professor Kelly
+ * @editor arwinstanley
+ * @Date 4/12/18
+ * 
+ * This Class is a the tic-tac-toe hash code generator
+ */
 public class TicTacToeHashCode extends Board {
 
 	public static boolean[] winners; // True if the hash string that maps to this index is a winner, false otherwise
 
 	TicTacToeHashCode(String s) {
 		super(s);
-      //TODO Instantiate winners array
 		}
 
 	@Override
@@ -41,15 +44,11 @@ public class TicTacToeHashCode extends Board {
 
 	@Override
 	public boolean isWin(String s) {
-      // TODO write an isWin method that takes in a String.  This should not change the board.  Board has an additional charAt 
-      // TODO method to facilitate this
-		
 		return winners[myHashCode(s.toCharArray())];
       }
       
 	@Override
 	public boolean isWin() {
-      // TODO write an isWin method that uses boardString
 		return winners[myHashCode(getBoardString().toCharArray())];
       }
    public int charInt(char c) {
@@ -68,7 +67,6 @@ public class TicTacToeHashCode extends Board {
    		default: return -1;
    	}
    }
-  
 	/* 
 	 * @author WinstanleyA
 	 * @Date 3/8/18
@@ -100,11 +98,21 @@ public class TicTacToeHashCode extends Board {
 			allTests[count] = all.nextLine();
 			count++;
 		}
+		String[] halfAndHalf = new String[10];
+		int count2 = 0;
+		Scanner half = reader(args[2]);
+		while(half.hasNextLine()) {
+			halfAndHalf[count2] = half.nextLine();
+			count2++;
+		}
 		
 		TicTacToeHashCode board = new TicTacToeHashCode("Tic Tac Toe");
-		 for(String y : allTests) {
+		 for(String y : halfAndHalf) {
 		   board.setBoardString(y);
-		   Thread.sleep(500);
+		   board.resetBoardString();
+		   board.setHashCodeLabel(board.myHashCode());
+		   board.setWinnerLabel(board.isWin());
+		   Thread.sleep(1000);
 		 }
 	}
 
