@@ -8,7 +8,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
+/**
+ * @author Professor Kelly
+ * @user arwinstanley
+ * @Date 4/12/18
+ * 
+ * This Class board and is mainly running the graphical interface and showing the board
+ */
 abstract class Board extends JFrame implements ActionListener {
 
 	private JButton buttons[][];
@@ -16,20 +22,44 @@ abstract class Board extends JFrame implements ActionListener {
 	private JLabel lblWinTitle;
 
 	private String boardString = "";
-
+	/**
+	 * @param title is the name of the board
+	 * @return none
+	 * 
+	 * creates a board with the name 'title' and calls setupFrame
+	 * 
+	 */
 	public Board(String title) {
 		super(title);
 		setupFrame();
 	}
-
+	/**
+	 * @param hashcode is the generated hashcode of a board
+	 * @return none
+	 * 
+	 * standard setter that changes the on-screen label for hashcode
+	 * 
+	 */
 	public void setHashCodeLabel(int hashcode) {
 		lblHashCode.setText("" + hashcode);
 	}
-
+	/**
+	 * @param result is the generated win/lose message
+	 * @return none
+	 * 
+	 * standard setter that changes the on-screen label for winner/loser
+	 * 
+	 */
 	public void setWinnerLabel(String result) {
 		lblWinTitle.setText(result);
 	}
-
+	/**
+	 * @param result is the generated win/lose condition
+	 * @return none
+	 * 
+	 * same as the one above except it takes in an boolean and changes it to a string
+	 * 
+	 */
 	public void setWinnerLabel(boolean result) {
 		if (result)
 			setWinnerLabel("Winner");
@@ -41,8 +71,15 @@ abstract class Board extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	}
-
-	JPanel setupPanelOne() {
+	/**
+	 * @param none
+	 * @return panel, a Jpanel used for the non-gameplay information
+	 * 
+	 * creates a Jpanel and adds in labels for the hashcode and for win/lose
+	 * 
+	 */
+	public JPanel setupPanelOne() {
+		//I wrote in the 'public' just to make it look nicer
 		JPanel panel = new JPanel();
 		JLabel lblHCTitle = new JLabel("Hash Code");
 		;
@@ -55,7 +92,13 @@ abstract class Board extends JFrame implements ActionListener {
 		panel.add(lblWinTitle);
 		return panel;
 	}
-
+	/**
+	 * @param none
+	 * @return panel, a Jpanel used for the gameplay information
+	 * 
+	 * creates a Jpanel and adds in a 3x3 grid that is made up of buttons so that they can be changed by a click
+	 * 
+	 */
 	private JPanel setupPanelTwo() {
 		JButton b;
 		JPanel panel = new JPanel();
@@ -87,7 +130,13 @@ abstract class Board extends JFrame implements ActionListener {
 
 		return panel;
 	}
-
+	/**
+	 * @param ch is a char that comes off the board
+	 * @return a char that is next to the one passed in, in the base 3 system
+	 * 
+	 * switches the char to the next one in the base 3 system used to represent tic-tac-toe
+	 * 
+	 */
 	private static char cycleValue(char ch) {
 		switch (ch) {
 		case 'x':
@@ -98,7 +147,13 @@ abstract class Board extends JFrame implements ActionListener {
 			return 'x';
 		}
 	}
-
+	/**
+	 * @param none
+	 * @return none
+	 * 
+	 * sets up the GUI and calls setup methods for both panels
+	 * 
+	 */
 	private void setupFrame() {
 		JPanel panel2 = new JPanel();
 
@@ -115,7 +170,13 @@ abstract class Board extends JFrame implements ActionListener {
 
 		super.setVisible(true);
 	}
-
+	/**
+	 * @param none
+	 * @return a random char ' ','x', or 'o'
+	 * 
+	 * returns a random state of any given board slot
+	 * 
+	 */
 	private char randomXO() {
 		int rnd = (int) (Math.random() * TicTacToe.CHAR_POSSIBILITIES);
 		switch (rnd) {
@@ -127,13 +188,39 @@ abstract class Board extends JFrame implements ActionListener {
 			return ' ';
 		}
 	}
-
+	/**
+	 * @param none
+	 * @return int a hashcode generated for this board
+	 * 
+	 * creates hashcode using a base 3 number system by converting the individual slots and multiplying that times 3^n 
+	 * where n is the position on the board, starting at 0
+	 * 
+	 */
 	abstract int myHashCode();
-
+	/**
+	 * @param s a string that is a representation of the board
+	 * @return true if there is a winner false otherwise
+	 * 
+	 * determines whether there is a winner or not
+	 * 
+	 */
 	abstract boolean isWin(String s);
-
+	/**
+	 * @param none
+	 * @return true if there is a winner false otherwise
+	 * 
+	 * determines whether there is a winner or not using the board string
+	 * 
+	 */
 	abstract boolean isWin();
-
+	/**
+	 * @param row an int index in the row
+	 * @param col an int index in the column 
+	 * @return the char at the specified position
+	 * 
+	 * returns a char at any specified position from the board string
+	 * 
+	 */
 	public char charAt(int row, int col) {
 		String value = buttons[row][col].getText();
 		if (value.length() > 0)
@@ -141,7 +228,15 @@ abstract class Board extends JFrame implements ActionListener {
 		else
 			return '*';
 	}
-   
+	/**
+	 * @param s a string that is a representation of the board
+	 * @param row an int index in the row
+	 * @param col an int index in the column 
+	 * @return the char at the specified position
+	 * 
+	 * returns a char at any specified position from the given string
+	 * 
+	 */
    public char charAt(String s, int row, int col) {
      int pos = row * TicTacToe.COLS + col;
      if (s.length() >= pos)
@@ -149,7 +244,13 @@ abstract class Board extends JFrame implements ActionListener {
      else
        return '*';   
    }
-
+	/**
+	 * @param s a string that is a representation of the board
+	 * @return none
+	 * 
+	 * changes the buttons on the grid to show the correct char from the base 3 system
+	 * 
+	 */
 	public void show(String s) {
 		int pos = 0;
 		String letter;
@@ -173,7 +274,13 @@ abstract class Board extends JFrame implements ActionListener {
 				pos++;
 			}
 	}
-
+	/**
+	 * @param none
+	 * @return none
+	 * 
+	 * resets the board string and the tic-tac-toe class
+	 * 
+	 */
 	public void resetBoardString() {
    boardString = "";
 		for (int r = 0; r < TicTacToe.ROWS; r++)
@@ -181,16 +288,34 @@ abstract class Board extends JFrame implements ActionListener {
 				boardString += buttons[r][c].getText();
 			}
 	}
-
+	/**
+	 * @param s a String representation of the board
+	 * @return none
+	 * 
+	 * standard setter that changes board string to s and then calls show() with s
+	 * 
+	 */
 	public void setBoardString(String s) {
 		boardString = s;
 		show(s);
 	}
-
+	/**
+	 * @param none
+	 * @return the boardString
+	 * 
+	 * standard getter that returns the boardstring
+	 * 
+	 */
 	public String getBoardString() {
 		return boardString;
 	}
-
+	/**
+	 * @param none
+	 * @return none
+	 * 
+	 * generates a random board state and adjusts the board accordingly 
+	 * 
+	 */
 	public void displayRandomString() {
 		for (int r = 0; r < TicTacToe.ROWS; r++)
 			for (int c = 0; c < TicTacToe.COLS; c++) {
