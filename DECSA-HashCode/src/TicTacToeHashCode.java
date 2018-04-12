@@ -1,9 +1,12 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 //TODO Make sure you remove all of the TODO comments from this file before turning itin
 
 public class TicTacToeHashCode extends Board {
 
-	boolean[] winners; // True if the hash string that maps to this index is a winner, false otherwise
+	public static boolean[] winners; // True if the hash string that maps to this index is a winner, false otherwise
 
 	TicTacToeHashCode(String s) {
 		super(s);
@@ -13,10 +16,10 @@ public class TicTacToeHashCode extends Board {
 	@Override
 	public int myHashCode() {
    	  int[] pwrsOfThre = {1,3,9,27,81,243,729,2187,6561};
-      char[] temp = new char[10];
+      char[] temp = new char[9];
       int count = 0;
-      for(int i = 1; i<=3;i++) {
-    	  for(int j = 1; j<=3;j++) {
+      for(int i = 0; i<=2;i++) {
+    	  for(int j = 0; j<=2;j++) {
     		  temp[count] = super.charAt(i,j);
     		  count++;
     	  }
@@ -27,18 +30,27 @@ public class TicTacToeHashCode extends Board {
       }
       return sum;
 	}
+	public static int myHashCode(char[] arr) {
+	   	  int[] pwrsOfThre = {1,3,9,27,81,243,729,2187,6561};
+	      int sum = 0;
+	      for(int i = 0; i < arr.length ; i++) {
+	    	  sum += statCharInt(arr[i])*pwrsOfThre[i];
+	      }
+	      return sum;
+		}
 
 	@Override
 	public boolean isWin(String s) {
       // TODO write an isWin method that takes in a String.  This should not change the board.  Board has an additional charAt 
       // TODO method to facilitate this
-		return false;
+		
+		return winners[myHashCode(s.toCharArray())];
       }
       
 	@Override
 	public boolean isWin() {
       // TODO write an isWin method that uses boardString
-		return false;
+		return winners[myHashCode(getBoardString().toCharArray())];
       }
    public int charInt(char c) {
     	switch(c) {
@@ -48,13 +60,51 @@ public class TicTacToeHashCode extends Board {
     		default: return -1;
     	}
     }
+   public static int statCharInt(char c) {
+   	switch(c) {
+   		case 'x': return 2;
+   		case 'o': return 1;
+   		case ' ': return 0;
+   		default: return -1;
+   	}
+   }
   
-      
+	/* 
+	 * @author WinstanleyA
+	 * @Date 3/8/18
+	 * @param fNme the name of the file you wish to read
+	 * @return input a Scanner to read the file you gave as input
+	 */
+	public static Scanner reader(String fNme) {
+		File scannable = new File( fNme );
+		Scanner input = null;
+		try {
+			input = new Scanner(scannable);
+		} catch (FileNotFoundException ex) {
+			System.out.println("Cant open file: " + fNme);
+			return null;
+		}
+		return input;
+	}
 	public static void main(String[] args) throws InterruptedException {
+		winners = new boolean[198683];
+		Scanner win = reader(args[0]);
+		while(win.hasNextLine()) {
+			char[] cArr = win.nextLine().toCharArray();
+			winners[myHashCode(cArr)] = true;
+		}
+		String[] allTests = new String[198683];
+		int count = 0;
+		Scanner all = reader(args[1]);
+		while(all.hasNextLine()) {
+			allTests[count] = all.nextLine();
+			count++;
+		}
+		
 		TicTacToeHashCode board = new TicTacToeHashCode("Tic Tac Toe");
-		 while (true) {
-		   board.displayRandomString();
-		   Thread.sleep(4000);
+		 for(String y : allTests) {
+		   board.setBoardString(y);
+		   Thread.sleep(500);
 		 }
 	}
 
